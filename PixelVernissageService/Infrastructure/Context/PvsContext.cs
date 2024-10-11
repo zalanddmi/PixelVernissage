@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces.Entities;
 using Domain.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,29 @@ namespace Infrastructure.Context
     public class PvsContext(DbContextOptions options, ICurrentUserService currentUserService) : DbContext(options)
     {
         private readonly ICurrentUserService _currentUserService = currentUserService;
+
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.LogTo(Console.WriteLine);
+            base.OnConfiguring(optionsBuilder);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Genre>().HasData(
+                new Genre() { Id = 1, Name = "Портрет" },
+                new Genre() { Id = 2, Name = "Пейзаж" },
+                new Genre() { Id = 3, Name = "Натюрморт" },
+                new Genre() { Id = 4, Name = "Архитектура" }
+            );
+            base.OnModelCreating(modelBuilder);
+        }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

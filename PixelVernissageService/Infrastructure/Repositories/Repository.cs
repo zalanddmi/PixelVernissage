@@ -1,9 +1,9 @@
-﻿using Domain.Interfaces.Entities;
-using Domain.Interfaces.Repositories;
-using Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PVS.Domain.Interfaces.Entities;
+using PVS.Domain.Interfaces.Repositories;
+using PVS.Infrastructure.Context;
 
-namespace Infrastructure.Repositories
+namespace PVS.Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T> where T : Entity
     {

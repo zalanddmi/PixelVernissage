@@ -1,7 +1,7 @@
-﻿using Domain.Interfaces.Services;
+﻿using PVS.Domain.Interfaces.Services;
 using System.Security.Claims;
 
-namespace Server.Services
+namespace PVS.Server.Services
 {
     public class CurrentUserService : ICurrentUserService
     {

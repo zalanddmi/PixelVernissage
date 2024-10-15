@@ -1,9 +1,9 @@
-﻿using Domain.Entities;
-using Domain.Interfaces.Entities;
-using Domain.Interfaces.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using PVS.Domain.Entities;
+using PVS.Domain.Interfaces.Entities;
+using PVS.Domain.Interfaces.Services;
 
-namespace Infrastructure.Context
+namespace PVS.Infrastructure.Context
 {
     public class PvsContext(DbContextOptions options, ICurrentUserService currentUserService) : DbContext(options)
     {

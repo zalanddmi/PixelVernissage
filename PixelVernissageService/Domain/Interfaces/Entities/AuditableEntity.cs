@@ -1,4 +1,4 @@
-﻿namespace Domain.Interfaces.Entities
+﻿namespace PVS.Domain.Interfaces.Entities
 {
     public class AuditableEntity : Entity, IAuditableEntity
     {

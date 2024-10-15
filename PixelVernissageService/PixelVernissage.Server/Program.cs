@@ -1,11 +1,11 @@
-using Domain.Interfaces.Services;
-using Infrastructure.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
-using Server.Services;
+using PVS.Domain.Interfaces.Services;
+using PVS.Infrastructure.Context;
+using PVS.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

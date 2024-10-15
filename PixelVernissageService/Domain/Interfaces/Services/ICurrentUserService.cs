@@ -1,4 +1,4 @@
-﻿namespace Domain.Interfaces.Services
+﻿namespace PVS.Domain.Interfaces.Services
 {
     public interface ICurrentUserService
     {

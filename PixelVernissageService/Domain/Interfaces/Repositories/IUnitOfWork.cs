@@ -1,6 +1,6 @@
-﻿using Domain.Interfaces.Entities;
+﻿using PVS.Domain.Interfaces.Entities;
 
-namespace Domain.Interfaces.Repositories
+namespace PVS.Domain.Interfaces.Repositories
 {
     public interface IUnitOfWork : IDisposable
     {

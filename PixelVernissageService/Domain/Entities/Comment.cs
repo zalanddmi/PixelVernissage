@@ -1,6 +1,6 @@
-﻿using Domain.Interfaces.Entities;
+﻿using PVS.Domain.Interfaces.Entities;
 
-namespace Domain.Entities
+namespace PVS.Domain.Entities
 {
     /// <summary>
     /// Комментарий

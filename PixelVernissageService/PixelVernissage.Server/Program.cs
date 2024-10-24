@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using PVS.Domain.Interfaces.Repositories;
 using PVS.Domain.Interfaces.Services;
 using PVS.Infrastructure.Context;
+using PVS.Infrastructure.Repositories;
 using PVS.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,7 @@ builder.Configuration
         .AddEnvironmentVariables()
         .AddUserSecrets(typeof(Program).Assembly);
 
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
 builder.Services.AddAuthentication(options =>
 {
@@ -39,21 +42,24 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddHttpContextAccessor();
 
 var connectionString = builder.Configuration.GetConnectionString("Postgres");
+
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddDbContext<PvsContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
 
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
 

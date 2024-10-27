@@ -9,16 +9,16 @@ namespace PVS.Server.Controllers
     public class GenreController : Controller
     {
         private readonly IMediator _mediator;
-        
+
         public GenreController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Get(GetGenreRequest request)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(long id)
         {
-            var genre = await _mediator.Send(request);
+            var genre = await _mediator.Send(new GetGenreRequest(id));
             return Ok(genre);
         }
     }

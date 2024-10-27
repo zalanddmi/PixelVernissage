@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using PVS.Application.Profiles;
 using PVS.Domain.Interfaces.Repositories;
 using PVS.Domain.Interfaces.Services;
 using PVS.Infrastructure.Context;
 using PVS.Infrastructure.Repositories;
+using PVS.Server.Middlewares;
 using PVS.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +22,8 @@ builder.Configuration
         .AddEnvironmentVariables()
         .AddUserSecrets(typeof(Program).Assembly);
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
 builder.Services.AddAuthentication(options =>
@@ -42,7 +46,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(GenreProfile));
 builder.Services.AddHttpContextAccessor();
 
 var connectionString = builder.Configuration.GetConnectionString("Postgres");
@@ -57,6 +61,7 @@ builder.Services.AddDbContext<PvsContext>(options =>
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();

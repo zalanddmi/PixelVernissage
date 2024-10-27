@@ -1,24 +1,27 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PVS.Application.Requests.Genre;
+using PVS.Application.Responses.Genre;
 
 namespace PVS.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GenreController : Controller
+    public class GenreController(IMediator mediator) : Controller
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _mediator = mediator;
 
-        public GenreController(IMediator mediator)
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            _mediator = mediator;
+            List<GetGenreResponse> genres = await _mediator.Send(new GetGenresRequest());
+            return Ok(genres);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(long id)
+        public async Task<IActionResult> GetById(long id)
         {
-            var genre = await _mediator.Send(new GetGenreRequest(id));
+            GetGenreResponse genre = await _mediator.Send(new GetGenreRequest(id));
             return Ok(genre);
         }
     }

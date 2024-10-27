@@ -7,16 +7,10 @@ using PVS.Domain.Interfaces.Repositories;
 
 namespace PVS.Server.Handlers.Genre
 {
-    public class GetGenreHandler : IRequestHandler<GetGenreRequest, GetGenreResponse>
+    public class GetGenreHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<GetGenreRequest, GetGenreResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public GetGenreHandler(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
+        private readonly IMapper _mapper = mapper;
 
         public async Task<GetGenreResponse> Handle(GetGenreRequest request, CancellationToken cancellationToken = default)
         {

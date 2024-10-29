@@ -18,6 +18,6 @@ namespace PVS.Domain.Entities
         public DateTime? ModifiedAt { get; set; }
         public Image? Image { get; set; }
 
-        public List<Image> Images { get; set; } = [];
+        public List<Post> Posts { get; set; } = [];
     }
 }

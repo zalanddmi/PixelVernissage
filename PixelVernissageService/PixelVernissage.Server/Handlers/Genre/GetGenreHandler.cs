@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using PVS.Application.Exceptions;
 using PVS.Application.Requests.Genre;
 using PVS.Application.Responses.Genre;
 using PVS.Domain.Interfaces.Repositories;
+using PVS.Server.Exceptions;
 
 namespace PVS.Server.Handlers.Genre
 {

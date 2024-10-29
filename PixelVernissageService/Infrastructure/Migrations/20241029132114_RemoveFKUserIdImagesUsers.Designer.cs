@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PVS.Infrastructure.Context;
@@ -11,9 +12,11 @@ using PVS.Infrastructure.Context;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(PvsContext))]
-    partial class PvsContextModelSnapshot : ModelSnapshot
+    [Migration("20241029132114_RemoveFKUserIdImagesUsers")]
+    partial class RemoveFKUserIdImagesUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,7 +69,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("PVS.Domain.Entities.Genre", b =>
@@ -83,7 +86,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
 
                     b.HasData(
                         new
@@ -138,7 +141,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("PVS.Domain.Entities.Post", b =>
@@ -196,7 +199,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("PVS.Domain.Entities.User", b =>
@@ -244,7 +247,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PVS.Domain.Entities.Comment", b =>

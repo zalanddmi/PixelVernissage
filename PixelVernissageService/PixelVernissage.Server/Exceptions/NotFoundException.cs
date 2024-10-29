@@ -1,4 +1,4 @@
-﻿namespace PVS.Application.Exceptions
+﻿namespace PVS.Server.Exceptions
 {
     public class NotFoundException : ApplicationException
     {

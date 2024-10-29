@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using PVS.Application.Exceptions;
+using PVS.Server.Exceptions;
 using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;

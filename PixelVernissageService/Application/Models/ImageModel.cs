@@ -2,9 +2,9 @@
 {
     public class ImageModel
     {
-        public required byte[] ImageData { get; set; }
-        public required string ContentType { get; set; }
-        public required string Name { get; set; }
-        public required string Path { get; set; }
+        public byte[] ImageData { get; set; }
+        public string ContentType { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
     }
 }

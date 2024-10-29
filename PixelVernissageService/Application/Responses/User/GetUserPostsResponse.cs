@@ -4,6 +4,6 @@ namespace PVS.Application.Responses.User
 {
     public class GetUserPostsResponse
     {
-        public List<UserPostModel>? Posts { get; set; }
+        public List<UserPostModel>? Posts { get; set; } = [];
     }
 }

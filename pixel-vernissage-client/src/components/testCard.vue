@@ -4,7 +4,7 @@
 <template>
     <div>
         <a href="./postCardWindow.vue">
-            <img @click="" src="../testphoto/ee2a265d6653bc8746b93dacad536bcb.png">
+            <img @click="" src="../testphoto/61f271bb01d3b693943cae6ca63ec311.jpg">
             <p>Природа акрил Арт вечер ...</p>
             <div>
                 <p>Евгения</p>

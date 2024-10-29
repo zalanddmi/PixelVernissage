@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Minio;
+using Minio.DataModel.Args;
 using Npgsql;
 using PVS.Application.Profiles;
 using PVS.Domain.Interfaces.Repositories;
@@ -10,6 +12,7 @@ using PVS.Infrastructure.Context;
 using PVS.Infrastructure.Repositories;
 using PVS.Server.Middlewares;
 using PVS.Server.Services;
+using System.Net.Mime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +47,11 @@ builder.Services.AddAuthentication(options =>
         options.SignedOutRedirectUri = "/";
     });
 builder.Services.AddAuthorization();
+
+builder.Services.AddMinio(configureClient => configureClient
+            .WithEndpoint(builder.Configuration["Minio:Endpoint"])
+            .WithCredentials(builder.Configuration["Minio:AccessKey"], builder.Configuration["Minio:SecretKey"])
+            .Build());
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 builder.Services.AddAutoMapper(typeof(GenreProfile));
@@ -109,6 +117,21 @@ app.MapGet("/ping-database", () =>
         }
     }
     return "Подключение к БД успешно";
+});
+
+app.MapGet("/gachi", async (IMinioClient minio) =>
+{
+    string bucket = "bucket";
+    string objectName = "gachi300";
+    string filePath = @"gachi300pathfile";
+    string contentType = MediaTypeNames.Image.Png;
+    var putObjectArgs = new PutObjectArgs()
+                    .WithBucket(bucket)
+                    .WithObject(objectName)
+                    .WithFileName(filePath)
+                    .WithContentType(contentType);
+    var response = await minio.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
+    Console.WriteLine($"Гачи загружен: {response.Size} {response.ObjectName} {response.Etag}");
 });
 
 app.Run();

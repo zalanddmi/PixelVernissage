@@ -25,6 +25,13 @@ builder.Configuration
         .AddEnvironmentVariables()
         .AddUserSecrets(typeof(Program).Assembly);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+      "Development",
+      builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+    );
+});
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddControllers();
@@ -69,6 +76,7 @@ builder.Services.AddDbContext<PvsContext>(options =>
 
 var app = builder.Build();
 
+app.UseCors("Development");
 app.UseExceptionHandler();
 app.UseSwagger();
 app.UseSwaggerUI();

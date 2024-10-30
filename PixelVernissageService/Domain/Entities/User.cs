@@ -16,8 +16,9 @@ namespace PVS.Domain.Entities
         public string? Description { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? ModifiedAt { get; set; }
+        public long? ImageId { get; set; }
         public Image? Image { get; set; }
 
-        public List<Image> Images { get; set; } = [];
+        public List<Post> Posts { get; set; } = [];
     }
 }

@@ -2,10 +2,17 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Minio;
+using Minio.DataModel.Args;
 using Npgsql;
+using PVS.Application.Profiles;
+using PVS.Domain.Interfaces.Repositories;
 using PVS.Domain.Interfaces.Services;
 using PVS.Infrastructure.Context;
+using PVS.Infrastructure.Repositories;
+using PVS.Server.Middlewares;
 using PVS.Server.Services;
+using System.Net.Mime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +25,16 @@ builder.Configuration
         .AddEnvironmentVariables()
         .AddUserSecrets(typeof(Program).Assembly);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+      "Development",
+      builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+    );
+});
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer().AddSwaggerGen();
 builder.Services.AddAuthentication(options =>
 {
@@ -38,21 +55,32 @@ builder.Services.AddAuthentication(options =>
     });
 builder.Services.AddAuthorization();
 
+builder.Services.AddMinio(configureClient => configureClient
+            .WithEndpoint(builder.Configuration["Minio:Endpoint"])
+            .WithCredentials(builder.Configuration["Minio:AccessKey"], builder.Configuration["Minio:SecretKey"])
+            .Build());
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddAutoMapper(typeof(GenreProfile));
 builder.Services.AddHttpContextAccessor();
 
 var connectionString = builder.Configuration.GetConnectionString("Postgres");
+
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddDbContext<PvsContext>(options =>
 {
     options.UseNpgsql(connectionString);
 });
 
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
 var app = builder.Build();
 
+app.UseCors("Development");
+app.UseExceptionHandler();
 app.UseSwagger();
 app.UseSwaggerUI();
+app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -97,6 +125,21 @@ app.MapGet("/ping-database", () =>
         }
     }
     return "Подключение к БД успешно";
+});
+
+app.MapGet("/gachi", async (IMinioClient minio) =>
+{
+    string bucket = "bucket";
+    string objectName = "gachi300";
+    string filePath = @"gachi300pathfile";
+    string contentType = MediaTypeNames.Image.Png;
+    var putObjectArgs = new PutObjectArgs()
+                    .WithBucket(bucket)
+                    .WithObject(objectName)
+                    .WithFileName(filePath)
+                    .WithContentType(contentType);
+    var response = await minio.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
+    Console.WriteLine($"Гачи загружен: {response.Size} {response.ObjectName} {response.Etag}");
 });
 
 app.Run();

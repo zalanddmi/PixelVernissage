@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,8 @@ using Minio;
 using Minio.DataModel.Args;
 using Npgsql;
 using PVS.Application.Profiles;
+using PVS.Application.Requests.Account;
+using PVS.Domain.Entities;
 using PVS.Domain.Interfaces.Repositories;
 using PVS.Domain.Interfaces.Services;
 using PVS.Infrastructure.Context;
@@ -13,6 +16,7 @@ using PVS.Infrastructure.Repositories;
 using PVS.Server.Middlewares;
 using PVS.Server.Services;
 using System.Net.Mime;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +56,18 @@ builder.Services.AddAuthentication(options =>
         options.ResponseType = "code";
         options.SaveTokens = true;
         options.SignedOutRedirectUri = "/";
+        options.Events = new OpenIdConnectEvents
+        {
+            OnTokenValidated = async ctx =>
+            {
+                string userId = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+                string username = ctx.Principal.FindFirstValue("preferred_username");
+                string? fio = ctx.Principal.FindFirstValue("name");
+                string? email = ctx.Principal.FindFirstValue(ClaimTypes.Email);
+                var mediator = ctx.HttpContext.RequestServices.GetRequiredService<IMediator>();
+                await mediator.Send(new AuthorizeRequest(userId, username, fio, email));
+            }
+        };
     });
 builder.Services.AddAuthorization();
 
@@ -106,7 +122,7 @@ app.MapGet("/logout", (HttpContext context) =>
 app.MapGet("/user-info", (HttpContext context) =>
 {
     return context.User.FindFirst("preferred_username").Value;
-});
+}).RequireAuthorization();
 
 app.MapGet("/ping-database", () =>
 {

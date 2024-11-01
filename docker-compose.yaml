@@ -1,0 +1,10 @@
+name: pixel-vernissage
+services:
+  service:
+    image: pixel:latest
+    environment:
+      ASPNETCORE_URLS: "http://*:5207"
+    volumes:
+      - ./PixelVernissageService/PixelVernissage.Server/secrets.json/:/App/secrets.json
+    ports:
+      - "5207:5207"

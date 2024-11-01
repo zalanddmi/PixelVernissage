@@ -1,0 +1,19 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - "devops/ci-cd"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Build and publish a Docker image for ${{ github.repository }}
+        uses: macbre/push-to-ghcr@master
+        with:
+          image_name: ${{ github.repository }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

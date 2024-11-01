@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - "devops/ci-cd"
+      - master
 
 jobs:
   build:

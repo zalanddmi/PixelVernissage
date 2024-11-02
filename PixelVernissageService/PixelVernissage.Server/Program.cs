@@ -8,7 +8,6 @@ using Minio.DataModel.Args;
 using Npgsql;
 using PVS.Application.Profiles;
 using PVS.Application.Requests.Account;
-using PVS.Domain.Entities;
 using PVS.Domain.Interfaces.Repositories;
 using PVS.Domain.Interfaces.Services;
 using PVS.Infrastructure.Context;
@@ -102,12 +101,12 @@ app.UseAuthorization();
 
 app.MapGet("/", () =>
 {
-    return Results.Text(content: "<a href='/login'> Войти </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
+    return Results.Text(content: "<a href='/login'> Р’РѕР№С‚Рё </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
 });
 
 app.MapGet("/login", () =>
 {
-    return Results.Text(content: "<p>Вход осуществлен</p> <br> <a href='/logout'> Выйти </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
+    return Results.Text(content: "<p>Р’С…РѕРґ РѕСЃСѓС‰РµСЃС‚РІР»РµРЅ</p> <br> <a href='/logout'> Р’С‹Р№С‚Рё </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
 }).RequireAuthorization();
 
 app.MapGet("/logout", (HttpContext context) =>
@@ -140,7 +139,7 @@ app.MapGet("/ping-database", () =>
             reader.Close();
         }
     }
-    return "Подключение к БД успешно";
+    return "РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р‘Р” СѓСЃРїРµС€РЅРѕ";
 });
 
 app.MapGet("/gachi", async (IMinioClient minio) =>
@@ -155,7 +154,7 @@ app.MapGet("/gachi", async (IMinioClient minio) =>
                     .WithFileName(filePath)
                     .WithContentType(contentType);
     var response = await minio.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
-    Console.WriteLine($"Гачи загружен: {response.Size} {response.ObjectName} {response.Etag}");
+    Console.WriteLine($"Р“Р°С‡Рё Р·Р°РіСЂСѓР¶РµРЅ: {response.Size} {response.ObjectName} {response.Etag}");
 });
 
 app.Run();

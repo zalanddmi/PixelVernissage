@@ -6,10 +6,6 @@ namespace PVS.Server.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        public IActionResult LoginCallback()
-        {
-            Console.WriteLine("Вошел");
-            return Ok("Вошел");
-        }
+
     }
 }

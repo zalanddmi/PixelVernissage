@@ -18,7 +18,7 @@ namespace PVS.Infrastructure.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.LogTo(Console.WriteLine);
-            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -29,7 +29,6 @@ namespace PVS.Infrastructure.Context
                 new Genre() { Id = 3, Name = "Натюрморт" },
                 new Genre() { Id = 4, Name = "Архитектура" }
             );
-            base.OnModelCreating(modelBuilder);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

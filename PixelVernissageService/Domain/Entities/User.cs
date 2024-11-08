@@ -12,9 +12,9 @@ namespace PVS.Domain.Entities
     [Index(nameof(Nickname), IsUnique = true)]
     public class User : Entity
     {
-        public string IdUser { get; set; }
-        public string Username { get; set; }
-        public string Nickname { get; set; }
+        public required string IdUser { get; set; }
+        public required string Username { get; set; }
+        public required string Nickname { get; set; }
         public string? FIO { get; set; }
         public string? Phonenumber { get; set; }
         public string? Email { get; set; }
@@ -22,8 +22,8 @@ namespace PVS.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? ModifiedAt { get; set; }
         public long? ImageId { get; set; }
-        public Image? Image { get; set; }
+        public virtual Image? Image { get; set; }
 
-        public List<Post> Posts { get; set; } = [];
+        public virtual List<Post> Posts { get; set; } = [];
     }
 }

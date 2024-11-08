@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Minio;
 using Minio.DataModel.Args;
 using Npgsql;
 using PVS.Application.Profiles;
+using PVS.Application.Requests.Account;
 using PVS.Domain.Interfaces.Repositories;
 using PVS.Domain.Interfaces.Services;
 using PVS.Infrastructure.Context;
@@ -13,6 +15,7 @@ using PVS.Infrastructure.Repositories;
 using PVS.Server.Middlewares;
 using PVS.Server.Services;
 using System.Net.Mime;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +55,18 @@ builder.Services.AddAuthentication(options =>
         options.ResponseType = "code";
         options.SaveTokens = true;
         options.SignedOutRedirectUri = "/";
+        options.Events = new OpenIdConnectEvents
+        {
+            OnTokenValidated = async ctx =>
+            {
+                string userId = ctx.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+                string username = ctx.Principal.FindFirstValue("preferred_username");
+                string? fio = ctx.Principal.FindFirstValue("name");
+                string? email = ctx.Principal.FindFirstValue(ClaimTypes.Email);
+                var mediator = ctx.HttpContext.RequestServices.GetRequiredService<IMediator>();
+                await mediator.Send(new AuthorizeRequest(userId, username, fio, email));
+            }
+        };
     });
 builder.Services.AddAuthorization();
 
@@ -86,12 +101,12 @@ app.UseAuthorization();
 
 app.MapGet("/", () =>
 {
-    return Results.Text(content: "<a href='/login'> Войти </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
+    return Results.Text(content: "<a href='/login'> Р’РѕР№С‚Рё </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
 });
 
 app.MapGet("/login", () =>
 {
-    return Results.Text(content: "<p>Вход осуществлен</p> <br> <a href='/logout'> Выйти </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
+    return Results.Text(content: "<p>Р’С…РѕРґ РѕСЃСѓС‰РµСЃС‚РІР»РµРЅ</p> <br> <a href='/logout'> Р’С‹Р№С‚Рё </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
 }).RequireAuthorization();
 
 app.MapGet("/logout", (HttpContext context) =>
@@ -106,7 +121,7 @@ app.MapGet("/logout", (HttpContext context) =>
 app.MapGet("/user-info", (HttpContext context) =>
 {
     return context.User.FindFirst("preferred_username").Value;
-});
+}).RequireAuthorization();
 
 app.MapGet("/ping-database", () =>
 {
@@ -124,7 +139,7 @@ app.MapGet("/ping-database", () =>
             reader.Close();
         }
     }
-    return "Подключение к БД успешно";
+    return "РџРѕРґРєР»СЋС‡РµРЅРёРµ Рє Р‘Р” СѓСЃРїРµС€РЅРѕ";
 });
 
 app.MapGet("/gachi", async (IMinioClient minio) =>
@@ -139,7 +154,7 @@ app.MapGet("/gachi", async (IMinioClient minio) =>
                     .WithFileName(filePath)
                     .WithContentType(contentType);
     var response = await minio.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
-    Console.WriteLine($"Гачи загружен: {response.Size} {response.ObjectName} {response.Etag}");
+    Console.WriteLine($"Р“Р°С‡Рё Р·Р°РіСЂСѓР¶РµРЅ: {response.Size} {response.ObjectName} {response.Etag}");
 });
 
 app.Run();

@@ -4,7 +4,7 @@ using PVS.Domain.Interfaces.Repositories;
 
 namespace PVS.Server.Handlers.Account
 {
-    public class AuthorizeHandler(IUnitOfWork unitOfWork) : IRequestHandler<AuthorizeRequest>
+    public class AuthorizeRequestHandler(IUnitOfWork unitOfWork) : IRequestHandler<AuthorizeRequest>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
 

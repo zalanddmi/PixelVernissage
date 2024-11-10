@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Minio;
 using Minio.DataModel.Args;
 using Npgsql;
@@ -86,7 +87,17 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddDbContext<PvsContext>(options =>
 {
-    options.UseNpgsql(connectionString);
+    var connectionStringBuilder = new NpgsqlConnectionStringBuilder(connectionString);
+    var searchPaths = connectionStringBuilder.SearchPath?.Split(',');
+
+    options.UseNpgsql(connectionString, o =>
+    {
+        if (searchPaths is { Length: > 0 })
+        {
+            var mainSchema = searchPaths[0];
+            o.MigrationsHistoryTable(HistoryRepository.DefaultTableName, mainSchema);
+        }
+    });
 });
 
 var app = builder.Build();

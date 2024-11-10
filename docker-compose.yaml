@@ -4,6 +4,7 @@ services:
     image: ghcr.io/zalanddmi/pixelvernissage:latest
     environment:
       ASPNETCORE_URLS: "http://*:5207"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: true
     volumes:
       - ./secrets.json/:/App/secrets.json
     ports:

@@ -1,0 +1,10 @@
+name: pixel-vernissage
+services:
+  service:
+    image: ghcr.io/zalanddmi/pixelvernissage:latest
+    environment:
+      ASPNETCORE_URLS: "http://*:5207"
+    volumes:
+      - ./secrets.json/:/App/secrets.json
+    ports:
+      - "5207:5207"

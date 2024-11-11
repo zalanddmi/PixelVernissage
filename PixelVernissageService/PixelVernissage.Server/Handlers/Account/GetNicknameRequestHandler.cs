@@ -18,8 +18,7 @@ namespace PVS.Server.Handlers.Account
                 throw new NotFoundException("Id текущего пользователя отсутствует");
             }
             var userRepository = _unitOfWork.GetRepository<PVS.Domain.Entities.User>();
-            var users = await userRepository.GetAllAsync();
-            var user = users.FirstOrDefault(user => user.IdUser == _currentUserService.CurrentUserId) ?? throw new NotFoundException("Пользователь не найден");
+            var user = await userRepository.GetAsync(user => user.IdUser == _currentUserService.CurrentUserId) ?? throw new NotFoundException("Пользователь не найден");
             return user.Nickname;
         }
     }

@@ -23,7 +23,7 @@ namespace PVS.Server.Handlers.User
             var userRepository = _unitOfWork.GetRepository<PVS.Domain.Entities.User>();
             var user = await userRepository.GetByIdAsync(request.userId) ?? throw new NotFoundException($"Пользователь по id = {request.userId} не найден");
             var postRepository = _unitOfWork.GetRepository<Post>();
-            var posts = postRepository.GetAllAsync().Result.Where(post => post.UserId == user.Id);
+            var posts = await postRepository.FindAsNoTrackingAsync(post => post.UserId == user.Id);
             if (!posts.Any())
             {
                 return new GetUserPostsResponse();

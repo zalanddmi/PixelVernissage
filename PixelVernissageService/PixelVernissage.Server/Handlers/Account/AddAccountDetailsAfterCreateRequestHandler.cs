@@ -26,8 +26,7 @@ namespace PVS.Server.Handlers.Account
                 throw new NotFoundException("Id текущего пользователя отсутствует");
             }
             var userRepository = _unitOfWork.GetRepository<PVS.Domain.Entities.User>();
-            var users = await userRepository.GetAllAsync();
-            var user = users.FirstOrDefault(user => user.IdUser == _currentUserService.CurrentUserId) ?? throw new NotFoundException("Пользователь не найден");
+            var user = await userRepository.GetAsync(user => user.IdUser == _currentUserService.CurrentUserId) ?? throw new NotFoundException("Пользователь не найден");
             user.Nickname = request.Nickname;
             user.Phonenumber = request.Phonenumber;
             user.Description = request.Description;
@@ -48,7 +47,6 @@ namespace PVS.Server.Handlers.Account
                 user.Image = image;
             }
             user.ModifiedAt = DateTime.UtcNow;
-            userRepository.Update(user);
             await _unitOfWork.CommitAsync();
         }
     }

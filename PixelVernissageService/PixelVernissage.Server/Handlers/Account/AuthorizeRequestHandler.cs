@@ -11,20 +11,20 @@ namespace PVS.Server.Handlers.Account
         public async Task Handle(AuthorizeRequest request, CancellationToken cancellationToken)
         {
             var userRepository = _unitOfWork.GetRepository<PVS.Domain.Entities.User>();
-            var user = userRepository.GetAllAsync().Result.FirstOrDefault(user => user.IdUser == request.UserId);
+            var user = await userRepository.GetAsync(user => user.IdUser == request.UserId);
             if (user != null)
             {
                 return;
             }
             string nickname = request.Username;
-            var userNickame = userRepository.GetAllAsync().Result.FirstOrDefault(user => user.Nickname == nickname);
+            var userNickame = await userRepository.GetAsync(user => user.Nickname == nickname);
             if (userNickame != null)
             {
                 int i = 1;
                 while (true)
                 {
                     nickname = request.Username + i;
-                    var userNickname = userRepository.GetAllAsync().Result.FirstOrDefault(user => user.Nickname == nickname);
+                    var userNickname = await userRepository.GetAsync(user => user.Nickname == nickname);
                     if (userNickname == null)
                     {
                         break;

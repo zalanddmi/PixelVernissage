@@ -14,7 +14,7 @@ namespace PVS.Server.Handlers.Genre
         public async Task<List<GetGenreResponse>> Handle(GetGenresRequest request, CancellationToken cancellationToken = default)
         {
             var genreRepository = _unitOfWork.GetRepository<PVS.Domain.Entities.Genre>();
-            var genres = await genreRepository.GetAllAsync();
+            var genres = await genreRepository.GetAllAsNoTrackingAsync();
             List<GetGenreResponse> getGenreResponses = [];
             foreach (PVS.Domain.Entities.Genre genre in genres)
             {

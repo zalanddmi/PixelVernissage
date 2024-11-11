@@ -16,6 +16,7 @@ namespace PVS.Domain.Entities
         public string Hashtags { get; set; } = string.Empty;
         public long GenreId { get; set; }
         public virtual required Genre Genre { get; set; }
+        public float Cost { get; set; } = 0;
         public bool IsSold { get; set; } = false;
         public bool IsArhcive { get; set; } = false;
 

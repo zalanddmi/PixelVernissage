@@ -32,6 +32,7 @@ namespace PVS.Server.Middlewares
             HttpStatusCode statusCode = exception switch
             {
                 BadRequestException => HttpStatusCode.BadRequest,
+                ForbiddenException => HttpStatusCode.Forbidden,
                 NotFoundException => HttpStatusCode.NotFound,
                 _ => HttpStatusCode.InternalServerError
             };

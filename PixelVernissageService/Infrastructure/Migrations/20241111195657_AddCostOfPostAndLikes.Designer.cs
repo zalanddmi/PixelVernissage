@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PVS.Infrastructure.Context;
@@ -11,9 +12,11 @@ using PVS.Infrastructure.Context;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(PvsContext))]
-    partial class PvsContextModelSnapshot : ModelSnapshot
+    [Migration("20241111195657_AddCostOfPostAndLikes")]
+    partial class AddCostOfPostAndLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,21 +27,6 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("HashtagPost", b =>
-                {
-                    b.Property<long>("HashtagsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PostsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("HashtagsId", "PostsId");
-
-                    b.HasIndex("PostsId");
-
-                    b.ToTable("HashtagPost");
-                });
 
             modelBuilder.Entity("PVS.Domain.Entities.Comment", b =>
                 {
@@ -126,26 +114,6 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PVS.Domain.Entities.Hashtag", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Hashtags");
-                });
-
             modelBuilder.Entity("PVS.Domain.Entities.Image", b =>
                 {
                     b.Property<long>("Id")
@@ -223,10 +191,15 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<long>("GenreId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Hashtags")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<long>("ImageId")
                         .HasColumnType("bigint");
@@ -316,21 +289,6 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("HashtagPost", b =>
-                {
-                    b.HasOne("PVS.Domain.Entities.Hashtag", null)
-                        .WithMany()
-                        .HasForeignKey("HashtagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PVS.Domain.Entities.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PVS.Domain.Entities.Comment", b =>

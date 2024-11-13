@@ -5,19 +5,17 @@ using PVS.Application.Requests.Account;
 using PVS.Domain.Entities;
 using PVS.Domain.Interfaces.Repositories;
 using PVS.Domain.Interfaces.Services;
-using PVS.Infrastructure.Context;
 using PVS.Server.Constants;
 using PVS.Server.Exceptions;
 
 namespace PVS.Server.Handlers.Account
 {
-    public class AddAccountDetailsAfterCreateRequestHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMinioClient minioClient, PvsContext context)
+    public class AddAccountDetailsAfterCreateRequestHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IMinioClient minioClient)
         : IRequestHandler<AddAccountDetailsAfterCreateRequest>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ICurrentUserService _currentUserService = currentUserService;
         private readonly IMinioClient _minioClient = minioClient;
-        private readonly PvsContext _context = context;
 
         public async Task Handle(AddAccountDetailsAfterCreateRequest request, CancellationToken cancellationToken)
         {

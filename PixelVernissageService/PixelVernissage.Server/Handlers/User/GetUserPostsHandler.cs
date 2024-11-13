@@ -22,14 +22,14 @@ namespace PVS.Server.Handlers.User
         {
             var userRepository = _unitOfWork.GetRepository<PVS.Domain.Entities.User>();
             var user = await userRepository.GetByIdAsync(request.userId) ?? throw new NotFoundException($"Пользователь по id = {request.userId} не найден");
-            var postRepository = _unitOfWork.GetRepository<Post>();
-            var posts = await postRepository.FindAsNoTrackingAsync(post => post.UserId == user.Id);
+            var postRepository = _unitOfWork.GetRepository<PVS.Domain.Entities.Post>();
+            var posts = await postRepository.FindAsNoTrackingAsync(post => post.UserId == user.Id && !post.IsArhcive);
             if (!posts.Any())
             {
                 return new GetUserPostsResponse();
             }
             List<UserPostModel> userPostModels = [];
-            foreach (Post post in posts)
+            foreach (PVS.Domain.Entities.Post post in posts)
             {
                 ImageModel imageModel = await GetImageModel(post.ImageId) ?? throw new NotFoundException($"Данные изображения по id поста = {post.Id} не найдены");
                 UserPostModel userPostModel = new()

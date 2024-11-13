@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PVS.Infrastructure.Context;
@@ -11,9 +12,11 @@ using PVS.Infrastructure.Context;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(PvsContext))]
-    partial class PvsContextModelSnapshot : ModelSnapshot
+    [Migration("20241111204322_AddHashtags")]
+    partial class AddHashtags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

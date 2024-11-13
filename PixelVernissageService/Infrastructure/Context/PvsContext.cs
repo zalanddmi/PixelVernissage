@@ -14,6 +14,8 @@ namespace PVS.Infrastructure.Context
         public DbSet<Image> Images { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<Hashtag> Hashtags { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -48,11 +50,11 @@ namespace PVS.Infrastructure.Context
                 }
                 else
                 {
+                    ((AuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.UtcNow;
+                    ((AuditableEntity)entityEntry.Entity).ModifiedBy = _currentUserService.CurrentUserId;
                     Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedAt).IsModified = false;
                     Entry((AuditableEntity)entityEntry.Entity).Property(p => p.CreatedBy).IsModified = false;
                 }
-                ((AuditableEntity)entityEntry.Entity).ModifiedAt = DateTime.UtcNow;
-                ((AuditableEntity)entityEntry.Entity).ModifiedBy = _currentUserService.CurrentUserId;
             }
 
             return await base.SaveChangesAsync(cancellationToken);

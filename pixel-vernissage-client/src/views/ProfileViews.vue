@@ -1,0 +1,34 @@
+<template>
+    <div>
+      <div class="head">
+        <p>Пиксеный вернитаж</p>
+        <p class="name">Анна</p>
+        <svg width="256px" height="256px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#6F484D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#6F484D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#6F484D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+      </div>
+    </div>
+  </template>
+
+<style scoped>
+    .head{
+        width: 100%;
+        height: 80px;
+        color: #6F484D;
+        display: flex;
+        align-items: center;
+        padding: 0.1px;
+    }
+    p{
+        font-size: 36px;
+        font-family: system-ui, 'Open Sans';
+        margin-left: 47px;
+    }
+    .name{
+        font-weight: bold;
+    }
+    svg{
+        margin-right: 20px;    
+        margin-left: auto;
+        height: 45px;
+        width: 45px;
+    }
+</style>

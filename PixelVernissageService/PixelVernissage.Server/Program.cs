@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Minio;
-using Minio.DataModel.Args;
 using Npgsql;
 using PVS.Application.Profiles;
 using PVS.Application.Requests.Account;
@@ -15,7 +14,6 @@ using PVS.Infrastructure.Context;
 using PVS.Infrastructure.Repositories;
 using PVS.Server.Middlewares;
 using PVS.Server.Services;
-using System.Net.Mime;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -110,12 +108,12 @@ app.MapControllers();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapGet("/", () =>
+app.MapGet("/login", () =>
 {
-    return Results.Text(content: "<a href='/login'> Войти </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
+    return Results.Text(content: "<a href='/login-success'> Войти </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
 });
 
-app.MapGet("/login", () =>
+app.MapGet("/login-success", () =>
 {
     return Results.Text(content: "<p>Вход осуществлен</p> <br> <a href='/logout'> Выйти </a>", contentType: "text/html", contentEncoding: System.Text.Encoding.UTF8);
 }).RequireAuthorization();
@@ -127,45 +125,6 @@ app.MapGet("/logout", (HttpContext context) =>
                 OpenIdConnectDefaults.AuthenticationScheme,
                 CookieAuthenticationDefaults.AuthenticationScheme
             ]);
-});
-
-app.MapGet("/user-info", (HttpContext context) =>
-{
-    return context.User.FindFirst("preferred_username").Value;
-}).RequireAuthorization();
-
-app.MapGet("/ping-database", () =>
-{
-    using (var conn = new NpgsqlConnection(connectionString))
-    {
-        Console.WriteLine("Opening connection");
-        conn.Open();
-        using (var command = new NpgsqlCommand("SELECT id, data FROM ping", conn))
-        {
-            var reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                Console.WriteLine($"{reader.GetValue(0)}, {reader.GetValue(1)}");
-            }
-            reader.Close();
-        }
-    }
-    return "Подключение к БД успешно";
-});
-
-app.MapGet("/gachi", async (IMinioClient minio) =>
-{
-    string bucket = "bucket";
-    string objectName = "gachi300";
-    string filePath = @"gachi300pathfile";
-    string contentType = MediaTypeNames.Image.Png;
-    var putObjectArgs = new PutObjectArgs()
-                    .WithBucket(bucket)
-                    .WithObject(objectName)
-                    .WithFileName(filePath)
-                    .WithContentType(contentType);
-    var response = await minio.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
-    Console.WriteLine($"Гачи загружен: {response.Size} {response.ObjectName} {response.Etag}");
 });
 
 app.Run();

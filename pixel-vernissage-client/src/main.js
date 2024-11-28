@@ -22,7 +22,15 @@ const router = createRouter({
         name: 'PicturePage',
         path: '/picture',
         component: () => import('./views/PictureViews.vue')
-    }]
+    },{
+        name: 'Error',
+        path: '/error',
+        component: () => import('./views/ErrorViews.vue')
+    },{
+        name: 'CreateProfile',
+        path: '/create',
+        component: () => import('./views/CreateProfileViews.vue')
+    },]
 });
 
 createApp(App)

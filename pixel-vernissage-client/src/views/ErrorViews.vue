@@ -5,7 +5,7 @@
       <p>ОШИБКА</p>
     </div>
     <div class="icon">
-      <img :src="iconSrc" :alt="iconAlt">
+      <img src="../testphoto/icons8-ошибка-100.png" alt="iconAlt">
     </div>
     <div class="errortext">
       <p>Извините, такой страницы не найдено</p>
@@ -18,7 +18,6 @@
 export default {
   data() {
     return {
-      iconSrc: 'icons8-ошибка-100.png',
       iconAlt: 'Иконка ошибки',
     };
   },

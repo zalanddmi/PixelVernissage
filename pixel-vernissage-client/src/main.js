@@ -22,6 +22,10 @@ const router = createRouter({
         name: 'PicturePage',
         path: '/picture',
         component: () => import('./views/PictureViews.vue')
+    },{
+        name: 'Search',
+        path: '/search',
+        component: () => import('./views/SearchViews.vue')
     }]
 });
 

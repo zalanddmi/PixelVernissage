@@ -42,12 +42,7 @@
         </div>
       </div>
       <div class="box">
-        <div class="module"><testCard/></div>
-        <div class="module"><postCard/></div>
-        <div class="module"><postCard/></div>
-        <div class="module"><postCard/></div>
-        <div class="module"><postCard/></div>
-        <div class="module"><postCard/></div>
+        <div class="module" v-for="n in 10"><testCard/></div>
       </div>
     </div>
   </template>

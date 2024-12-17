@@ -30,7 +30,19 @@ const router = createRouter({
         name: 'CreateProfile',
         path: '/create',
         component: () => import('./views/CreateProfileViews.vue')
-    },]
+    },{
+        name: 'Settings',
+        path: '/settings',
+        component: () => import('./views/SettingsViews.vue')
+    },{
+        name: 'CreatePost',
+        path: '/createPost',
+        component: () => import('./views/CreatePostViews.vue')
+    },{
+        name: 'Complaint',
+        path: '/complaint',
+        component: () => import('./views/ComplaintViews.vue')
+    }]
 });
 
 createApp(App)

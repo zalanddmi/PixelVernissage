@@ -78,7 +78,7 @@
     background-color: #EDE4DD; 
     margin: 0;
   }
-  
+
   .nav {
     background-color: #D8D4D1;
     text-align: center;
@@ -86,6 +86,7 @@
     top: 0; 
     width: 100%; 
     z-index: 10; 
+    margin-block-end: 0;
   }
   
   .nav p {
@@ -93,6 +94,7 @@
     font-weight: bold;
     font-size: 36px;
     margin: 1%;
+    margin-block-end: 0;
   }
   
   .container {

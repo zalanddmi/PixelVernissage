@@ -19,7 +19,7 @@
         // this.data = await response.json();
         const genre = await fetch("https://api.skapex.ru/api/Genre");
         this.data = await genre.json();
-        const userPost = await fetch("https://api.skapex.ru/api/User/0/posts");
+        const userPost = await fetch("https://api.skapex.ru/api/User/2/posts");
         this.posts = await userPost.json();
       }
     },
@@ -50,7 +50,10 @@
       </ul>
     </div>
     <div class="box">
-      <div class="module" v-if="posts" v-for="n in posts"><postCard namePicture="namePicture" nameUser="nameAuthor"/></div>
+      <div class="module" v-if="posts" v-for="n in posts" :key="n.id">
+        {{ n.name }}
+        <postCard namePicture="namePicture" nameUser="nameAuthor"/>
+      </div>
     </div>
   </div>
 </template>

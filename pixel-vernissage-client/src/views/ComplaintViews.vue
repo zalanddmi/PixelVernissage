@@ -19,7 +19,7 @@
             <textarea placeholder="Введите описание жалобы" rows="1"></textarea>
           </p>
           <p>
-            <input type="submit" value="Отправить жалобу"/>
+            <input @click="$router.push({name: 'Home'})" type="submit" value="Отправить жалобу"/>
           </p>
         </div>
       </div>

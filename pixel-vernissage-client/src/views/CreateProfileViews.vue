@@ -32,7 +32,7 @@
             <p>Описание о себе<br>
               <input type="text" v-model="description" placeholder="Введите сюда" />
             </p>
-            <p><input type="submit" value="Сохранить" /></p>
+            <p><input @click="$router.push({name: 'Home'})" type="submit" value="Сохранить" /></p>
           </form>
         </div>
       </div>

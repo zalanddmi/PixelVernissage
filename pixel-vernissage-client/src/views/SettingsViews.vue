@@ -16,8 +16,8 @@
           <p>WhatsApp: {{ whatsapp }}</p>
           <p>Описание о себе: {{ description }}</p>
           <p>
-            <button @click="editProfile">Редактировать профиль</button>
-            <button @click="logout">Выйти из аккаунта</button>
+            <button @click="$router.push({name: 'CreateProfile'})">Редактировать профиль</button>
+            <button @click="$router.push({name: 'Home'})">Выйти из аккаунта</button>
           </p>
         </div>
       </div>

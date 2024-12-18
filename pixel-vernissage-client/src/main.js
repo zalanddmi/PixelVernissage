@@ -42,6 +42,11 @@ const router = createRouter({
         name: 'Complaint',
         path: '/complaint',
         component: () => import('./views/ComplaintViews.vue')
+    },
+    {
+        name: 'Search',
+        path: '/search',
+        component: () => import('./views/SearchViews.vue')
     }]
 });
 

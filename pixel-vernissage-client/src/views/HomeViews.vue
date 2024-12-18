@@ -44,7 +44,7 @@
     </div>
     <div>
       <ul>
-        <li @click="$router.push({name: 'Cart'})" v-if="data" v-for="item in data" :key="item.id">
+        <li @click="$router.push({name: 'Home'})" v-if="data" v-for="item in data" :key="item.id">
           {{ item.name }}
         </li>
       </ul>

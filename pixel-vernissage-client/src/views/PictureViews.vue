@@ -6,19 +6,10 @@
       };
     },
     components:{
-      postCard,
-      testCard
     },
     methods: {
-      async fetchData() {
-        // const response = await fetch("https://api.skapex.ru/api/Genre/1");
-        // this.data = await response.json();
-        const genre = await fetch("https://api.skapex.ru/api/Genre");
-        this.data = await genre.json();
-      }
     },
     mounted(){
-      this.fetchData()
     }
   };
 </script>
